@@ -43,26 +43,43 @@ class MRWOOO_LIBS_Export {
             'who'          => '',
         );
 
-        $users = get_users($args);
-        $data = array();
+        $users = get_users($args);        
 
-        foreach($users as $user){
+        // heading of csv
+        $headings = array();
+
+        foreach($fields as $field){
+            array_push($headings, $field);
+        }
+        
+        foreach($users as $user) {
             $id = $user->ID;
             $meta = get_user_meta($id);
 
-            foreach($user as $i => $v){
-                if(!is_array($i)){
-                    $data[$id][$i] = $v;    
-                }
-            }
-
-            foreach($meta as $kk => $ii){
-                if(!(array_key_exists($kk, $fields)) && (!is_array($kk))){
-                    $m = get_user_meta($id, $kk, true);
-                    $data[$id][$kk] = $m;
+            foreach($meta as $key => $value) {
+                if(!in_array($key, $headings)){
+                    array_push($headings, $key);
                 }
             }
         }
+        
+        // collect data
+        $data = array();
+        
+        foreach($users as $user){
+            $id = $user->ID;
+            foreach($headings as $meta){
+                $value = get_user_meta($id, $meta, true);
+                if($meta == 'ID' || array_search($meta, $headings)){
+                    $data[$id][$meta] = $user->$meta;                    
+                }else if ($value == true) {
+                    $data[$id][$meta] = true;                    
+                } else {
+                    $data[$id][$meta] = false;                    
+                }
+            }
+        }
+
         status_header(200);
         
         header('Content-type: text/csv');
@@ -72,21 +89,13 @@ class MRWOOO_LIBS_Export {
         header('Expires: 0');
 
         $file = fopen('php://output', 'w');
-        $headings = array();
-        $i = 0;
-        if($i == 0){
-            foreach($data as $keys => $vals) {
-                foreach($vals as $key => $val){
-                    $headings[] = $key;
-                }
-                $i++;
-            }
-            fputcsv($file, $headings);  
-            
-        }
+
+        fputcsv($file, $headings);
+
         $file = fopen('php://output', 'a');
-        foreach ($data as $keys => $rows) {
-            fputcsv($file, $rows, ','); 
+
+        foreach ($data as $rows => $row) {
+            fputcsv($file, $row, ','); 
         };
         fclose($file);
     }
