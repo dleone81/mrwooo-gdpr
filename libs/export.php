@@ -84,7 +84,7 @@ class MRWOOO_LIBS_Export {
         }
         
         header('Content-type: text/csv');
-        header('Content-Disposition: attachment; filename="export'.time().'.csv"');
+        header('Content-Disposition: attachment; filename="export_'.time().'.csv"');
         header('Pragma: no-cache');
         header('Expires: 0');
 
