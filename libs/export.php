@@ -1,11 +1,12 @@
 <?php
 class MRWOOO_LIBS_Export {
+    private static $event = '/export/users-data-registry';
     /*
     * This method return a list of all users
     * $include array of user IDs
     * ref: https://codex.wordpress.org/Function_Reference/get_users
     */
-    public static function usersData($include = NULL, $fields= NULL){
+    public static function usersData($include = NULL, $fields = NULL, $plain = FALSE){
         if(is_null($include)){
             // list of ID that will be extract
             $include = array();
@@ -99,7 +100,13 @@ class MRWOOO_LIBS_Export {
         };
         fclose($file);
 
-        status_header(200);        
+        status_header(200);
+
+        // log
+        $user = wp_get_current_user();
+        $admin = $user->ID;
+
+        MRWOOO_DB_Logger::create($admin, self::$event, '201', $_SERVER['REMOTE_ADDR']);
     }
 }
 ?>
