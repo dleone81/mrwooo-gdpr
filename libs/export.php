@@ -75,7 +75,7 @@ class MRWOOO_LIBS_Export {
             foreach ($fields as $field) {
                 $data[$id][$field] = $user->$field;                
             }
-            foreach($headings as $meta){
+            foreach($headings as $meta) {
                 if(!in_array($meta, $fields)){
                     $value = get_user_meta($id, $meta, true);
                     $val = ($value == true ? intval(1) : intval(0));
