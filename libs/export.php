@@ -7,18 +7,21 @@ class MRWOOO_LIBS_Export {
     */
     public static function usersData($include = NULL, $fields= NULL){
         if(is_null($include)){
+            // list of ID that will be extract
             $include = array();
         }
 
-        $fields = array(
-            'ID',
-            'user_login',
-            'user_nicename',
-            'user_email',
-            'user_url',
-            'user_registered',
-            'display_name',
-        );
+        if(is_null($fields)){
+            $fields = array(
+                'ID',
+                'user_login',
+                'user_nicename',
+                'user_email',
+                'user_url',
+                'user_registered',
+                'display_name',
+            );
+        }
 
         // users
         $args = array(
@@ -45,7 +48,7 @@ class MRWOOO_LIBS_Export {
 
         $users = get_users($args);        
 
-        // heading of csv
+        // headings of csv
         $headings = array();
 
         foreach($fields as $field){
@@ -57,6 +60,7 @@ class MRWOOO_LIBS_Export {
             $meta = get_user_meta($id);
 
             foreach($meta as $key => $value) {
+                // add meta fields as headings in addition to fields
                 if(!in_array($key, $headings)){
                     array_push($headings, $key);
                 }
@@ -65,26 +69,22 @@ class MRWOOO_LIBS_Export {
         
         // collect data
         $data = array();
-        
         foreach($users as $user){
             $id = $user->ID;
+            foreach ($fields as $field) {
+                $data[$id][$field] = $user->$field;                
+            }
             foreach($headings as $meta){
-                $value = get_user_meta($id, $meta, true);
-                if($meta == 'ID' || array_search($meta, $headings)){
-                    $data[$id][$meta] = $user->$meta;                    
-                }else if ($value == true) {
-                    $data[$id][$meta] = true;                    
-                } else {
-                    $data[$id][$meta] = false;                    
+                if(!in_array($meta, $fields)){
+                    $value = get_user_meta($id, $meta, true);
+                    $val = ($value == true ? intval(1) : intval(0));
+                    $data[$id][$meta] = $val;
                 }
             }
         }
-
-        status_header(200);
         
         header('Content-type: text/csv');
-        header('Content-Disposition: attachment; filename="export.csv"');
-
+        header('Content-Disposition: attachment; filename="export'.time().'.csv"');
         header('Pragma: no-cache');
         header('Expires: 0');
 
@@ -98,6 +98,8 @@ class MRWOOO_LIBS_Export {
             fputcsv($file, $row, ','); 
         };
         fclose($file);
+
+        status_header(200);        
     }
 }
 ?>
