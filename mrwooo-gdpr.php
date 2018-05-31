@@ -42,7 +42,7 @@ require_once(MRWOOOGDPR_PLUGIN_DIR. 'libs/users.php');
 load_plugin_textdomain('mrwooo', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
 // action
-add_action( 'admin_post_users_data', array('MRWOOO_LIBS_Export', 'usersData'), 10, 3);
+add_action( 'admin_post_users_data', array('MRWOOO_LIBS_Export', 'usersData'), 10, 2);
 
 // filter
 add_filter( 'manage_users_columns', array('MRWOOO_LIBS_Users', 'usersColumnRegister'));
