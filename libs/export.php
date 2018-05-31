@@ -6,7 +6,7 @@ class MRWOOO_LIBS_Export {
     * $include array of user IDs
     * ref: https://codex.wordpress.org/Function_Reference/get_users
     */
-    public static function usersData($include = NULL, $fields = NULL, $plain = FALSE){
+    public static function usersData($include = NULL, $fields = NULL){
         if(is_null($include)){
             // list of ID that will be extract
             $include = array();
