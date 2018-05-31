@@ -42,10 +42,12 @@ require_once(MRWOOOGDPR_PLUGIN_DIR. 'libs/users.php');
 load_plugin_textdomain('mrwooo', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
 // action
-add_action( 'admin_post_users_data', array('MRWOOO_LIBS_Export', 'usersData'));
+add_action( 'admin_post_users_data', array('MRWOOO_LIBS_Export', 'usersData'), 10, 3);
 
 // filter
 add_filter( 'manage_users_columns', array('MRWOOO_LIBS_Users', 'usersColumnRegister'));
 add_filter( 'manage_users_custom_column', array('MRWOOO_LIBS_Users', 'usersColumnDisplay'), 10, 3 );
 add_filter( 'manage_users_sortable_columns', array('MRWOOO_LIBS_Users', 'usersRegisteredColumnSortable'));
+add_filter( 'bulk_actions-users', array('MRWOOO_LIBS_Users', 'userDataRegistryAction'));
+add_filter( 'handle_bulk_actions-users', array('MRWOOO_LIBS_Users', 'userDataRegistryHandler'));
 ?>
