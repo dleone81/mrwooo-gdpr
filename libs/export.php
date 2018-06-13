@@ -1,53 +1,20 @@
 <?php
 class MRWOOO_LIBS_Export {
     private static $event = '/export/users-data-registry';
-    /*
-    * This method return a list of all users
-    * $include array of user IDs
-    * ref: https://codex.wordpress.org/Function_Reference/get_users
-    */
-    public static function usersData($include = NULL, $fields = NULL){
-        if(is_null($include)){
-            // list of ID that will be extract
-            $include = array();
-        }
 
-        if(is_null($fields)){
-            $fields = array(
-                'ID',
-                'user_login',
-                'user_nicename',
-                'user_email',
-                'user_url',
-                'user_registered',
-                'display_name',
-            );
-        }
+    public static function exportUsersData(){
 
-        // users
-        $args = array(
-            'blog_id'      => '',
-            'role'         => '',
-            'role__in'     => array(),
-            'role__not_in' => array(),
-            'meta_key'     => '',
-            'meta_value'   => '',
-            'meta_compare' => '',
-            'meta_query'   => array(),
-            'date_query'   => array(),        
-            'include'      => $include,
-            'exclude'      => array(),
-            'orderby'      => 'login',
-            'order'        => 'ASC',
-            'offset'       => '',
-            'search'       => '',
-            'number'       => '',
-            'count_total'  => false,
-            'fields'       => $fields,
-            'who'          => '',
+        $fields = array(
+            'ID',
+            'user_login',
+            'user_nicename',
+            'user_email',
+            'user_url',
+            'user_registered',
+            'display_name',
         );
 
-        $users = get_users($args);        
+        $users = MRWOOO_LIBS_Users::getUsers();
 
         // headings of csv
         $headings = array();
@@ -84,6 +51,7 @@ class MRWOOO_LIBS_Export {
             }
         }
         
+        header('HTTP/1.1 201 Created');
         header('Content-type: text/csv');
         header('Content-Disposition: attachment; filename="export_'.time().'.csv"');
         header('Pragma: no-cache');
@@ -100,7 +68,7 @@ class MRWOOO_LIBS_Export {
         };
         fclose($file);
 
-        status_header(200);
+        // status_header(201);
 
         // log
         $user = wp_get_current_user();
