@@ -51,8 +51,6 @@ require_once(MRWOOOGDPR_PLUGIN_DIR. 'libs/users.php');
 load_plugin_textdomain('mrwooo', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
 // action
-// add_action( 'admin_post_users_data', array('MRWOOO_LIBS_Export', 'usersData'), 10, 2);
-add_action( 'mrwooo_gdpr_import_export', array('MRWOOO_GDPR_Ajax', 'loader'));
 add_action( 'mrwooo_gdpr_import_export', array('MRWOOO_GDPR_Ajax', 'importUsersData'));
 add_action( 'mrwooo_gdpr_import_export', array('MRWOOO_GDPR_Ajax', 'exportUsersData'));
 add_action( 'wp_ajax_importUsersData', array('MRWOOO_LIBS_Import', 'importUsersData'));
