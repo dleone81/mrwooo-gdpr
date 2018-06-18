@@ -50,12 +50,9 @@ class MRWOOO_LIBS_Export {
                 }
             }
         }
-        
+
         header('HTTP/1.1 201 Created');
-        header('Content-type: text/csv');
-        header('Content-Disposition: attachment; filename="export_'.time().'.csv"');
-        header('Pragma: no-cache');
-        header('Expires: 0');
+        header('Content-type: application/json; charset=UTF-8');
 
         $file = fopen('php://output', 'w');
 
@@ -67,8 +64,6 @@ class MRWOOO_LIBS_Export {
             fputcsv($file, $row, ','); 
         };
         fclose($file);
-
-        // status_header(201);
 
         // log
         $user = wp_get_current_user();

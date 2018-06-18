@@ -25,7 +25,7 @@ class MRWOOO_GDPR_Ajax {
                     $.ajax({
                         url: ajaxurl,
                         data: formData,
-                        dataType: "text",
+                        dataType: "json",
                         type: "POST",
                         success: function(data, textStatus, xhr){
                             // empty
@@ -34,10 +34,12 @@ class MRWOOO_GDPR_Ajax {
                             // empty
                         },
                         complete: function(xhr, textStatus){
+
+                            var method = 'importUsersData';
                             var status = JSON.stringify(xhr.status);
                             var msg = xhr.responseText;
 
-                            notice.getNotice('importUsersData', status, msg);
+                            notice.getNotice(method, status, msg);
                         },
                         cache: false,
                         contentType: false,
@@ -62,22 +64,23 @@ class MRWOOO_GDPR_Ajax {
                     $.ajax({
                         url: ajaxurl,
                         data: formData,
-                        dataType: "text",
+                        dataType: "json",
                         type: "POST",
                         success: function(data, textStatus, xhr){
-
-                            var method = 'exportUsersData';
-                            var status = JSON.stringify(xhr.status);
-                            var message = null;
-
-                            // notice
-                            notice.getNotice(method, status, message, data);
+                            // empty
                         },
                         error: function(xhr, textStatus, errorThrown){
                             // empty
                         },
                         complete: function(xhr, textStatus){
-                            // empty
+
+                            var method = 'exportUsersData';
+                            var status = JSON.stringify(xhr.status);
+                            var message = null;
+                            var data = xhr.responseText;
+
+                            // notice
+                            notice.getNotice(method, status, message, data);
                         },
                         cache: false,
                         contentType: false,
