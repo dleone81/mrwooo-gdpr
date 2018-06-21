@@ -6,7 +6,7 @@ class MRWOOO_GDPR_Ajax {
     /*
     *   This method upload CSV file to be imported in users data registry
     */
-    function importUsersData(){ ?>
+    public static function importUsersData(){ ?>
         <script type="text/javascript">
             jQuery(document).ready(function($){
 
@@ -52,7 +52,7 @@ class MRWOOO_GDPR_Ajax {
     /*
     *   This method export all users data report
     */
-    function exportUsersData() { ?>
+    public static function exportUsersData() { ?>
         <script type="text/javascript">
             jQuery(document).ready(function($){
                 $('#export_users_data').on('click', function(event){
